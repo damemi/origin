@@ -344,7 +344,7 @@ func (d *ProjectStatusDescriber) Describe(namespace, name string) (string, error
 			fmt.Fprintln(out)
 		}
 
-		errors, warnings := "", ""
+		errors, warnings, infos := "", "", ""
 		if len(errorMarkers) == 1 {
 			errors = "1 error"
 		} else if len(errorMarkers) > 1 {
@@ -355,16 +355,25 @@ func (d *ProjectStatusDescriber) Describe(namespace, name string) (string, error
 		} else if len(warningMarkers) > 1 {
 			warnings = fmt.Sprintf("%d warnings", len(warningMarkers))
 		}
+		if len(infoMarkers) > 0 {
+			infos = fmt.Sprintf("%d info", len(infoMarkers))
+		}
 
 		switch {
-		case !d.Suggest && len(errorMarkers) > 0 && len(warningMarkers) > 0:
-			fmt.Fprintf(out, "%s and %s identified, use '%[3]s status -v' to see details.\n", errors, warnings, d.CommandBaseName)
+		case !d.Suggest && len(errorMarkers) > 0 && len(warningMarkers) > 0 && len(infoMarkers) > 0:
+			fmt.Fprintf(out, "%s, %s, and %s identified, use '%[4]s status -v' to see details.\n", errors, warnings, infos, d.CommandBaseName)
 
 		case !d.Suggest && len(errorMarkers) > 0 && errorSuggestions > 0:
 			fmt.Fprintf(out, "%s identified, use '%[2]s status -v' to see details.\n", errors, d.CommandBaseName)
 
+		case !d.Suggest && len(warningMarkers) > 0 && len(infoMarkers) > 0:
+			fmt.Fprintf(out, "%s and %s identified, use '%[3]s status -v' to see details.\n", warnings, infos, d.CommandBaseName)
+
 		case !d.Suggest && len(warningMarkers) > 0:
 			fmt.Fprintf(out, "%s identified, use '%[2]s status -v' to see details.\n", warnings, d.CommandBaseName)
+
+		case !d.Suggest && len(infoMarkers) > 0:
+			fmt.Fprintf(out, "%s identified, use '%[2]s status -v' to see details.\n", infos, d.CommandBaseName)
 
 		case (len(services) == 0) && (len(standaloneDCs) == 0) && (len(standaloneImages) == 0):
 			fmt.Fprintln(out, "You have no services, deployment configs, or build configs.")
