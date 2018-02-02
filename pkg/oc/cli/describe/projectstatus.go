@@ -359,21 +359,22 @@ func (d *ProjectStatusDescriber) Describe(namespace, name string) (string, error
 			infos = fmt.Sprintf("%d info", len(infoMarkers))
 		}
 
+		markerStrings := []string{errors, warnings, infos}
+		markerString := ""
+		count := 0
+		for _, m := range markerStrings {
+			if len(m) > 0 {
+				if count > 0 {
+					markerString = fmt.Sprintf("%s,", markerString)
+				}
+				markerString = fmt.Sprintf("%s %s", markerString, m)
+				count++
+			}
+		}
+
 		switch {
-		case !d.Suggest && len(errorMarkers) > 0 && len(warningMarkers) > 0 && len(infoMarkers) > 0:
-			fmt.Fprintf(out, "%s, %s, and %s identified, use '%[4]s status -v' to see details.\n", errors, warnings, infos, d.CommandBaseName)
-
-		case !d.Suggest && len(errorMarkers) > 0 && errorSuggestions > 0:
-			fmt.Fprintf(out, "%s identified, use '%[2]s status -v' to see details.\n", errors, d.CommandBaseName)
-
-		case !d.Suggest && len(warningMarkers) > 0 && len(infoMarkers) > 0:
-			fmt.Fprintf(out, "%s and %s identified, use '%[3]s status -v' to see details.\n", warnings, infos, d.CommandBaseName)
-
-		case !d.Suggest && len(warningMarkers) > 0:
-			fmt.Fprintf(out, "%s identified, use '%[2]s status -v' to see details.\n", warnings, d.CommandBaseName)
-
-		case !d.Suggest && len(infoMarkers) > 0:
-			fmt.Fprintf(out, "%s identified, use '%[2]s status -v' to see details.\n", infos, d.CommandBaseName)
+		case !d.Suggest && ((len(errorMarkers) > 0 && errorSuggestions > 0) || len(warningMarkers) > 0 || len(infoMarkers) > 0):
+			fmt.Fprintf(out, "%s identified, use '%s status -v' to see details.\n", markerString, d.CommandBaseName)
 
 		case (len(services) == 0) && (len(standaloneDCs) == 0) && (len(standaloneImages) == 0):
 			fmt.Fprintln(out, "You have no services, deployment configs, or build configs.")
