@@ -54,12 +54,12 @@ os::log::info "oc version:        `oc version`"
 
 # Ensure that the master service responds to DNS requests. At this point 'oc cluster up' has verified
 # that the service is up
-MASTER_SERVICE_IP="172.30.0.1"
-DNS_SERVICE_IP="172.30.0.2"
+#MASTER_SERVICE_IP="172.30.0.1"
+#DNS_SERVICE_IP="172.30.0.2"
 # find the IP of the master service again by asking the IP of the master service, to verify port 53 tcp/udp is routed by the service
-os::cmd::expect_success_and_text "dig +tcp @${DNS_SERVICE_IP} kubernetes.default.svc.cluster.local. +short A | head -n 1" "${MASTER_SERVICE_IP}"
-os::cmd::expect_success_and_text "dig +notcp @${DNS_SERVICE_IP} kubernetes.default.svc.cluster.local. +short A | head -n 1" "${MASTER_SERVICE_IP}"
-
+#os::cmd::expect_success_and_text "dig +tcp @${DNS_SERVICE_IP} kubernetes.default.svc.cluster.local. +short A | head -n 1" "${MASTER_SERVICE_IP}"
+#os::cmd::expect_success_and_text "dig +notcp @${DNS_SERVICE_IP} kubernetes.default.svc.cluster.local. +short A | head -n 1" "${MASTER_SERVICE_IP}"
+#####BLOCK START
 # add e2e-user as a viewer for the default namespace so we can see infrastructure pieces appear
 os::cmd::expect_success 'oc adm policy add-role-to-user view e2e-user --namespace=default'
 
@@ -95,7 +95,7 @@ os::cmd::expect_success "oc logs rc/docker-registry-1 > /dev/null"
 # check that we can get a remote shell to a dc or rc
 os::cmd::expect_success_and_text "oc rsh dc/docker-registry cat config.yml" "5000"
 os::cmd::expect_success_and_text "oc rsh rc/docker-registry-1 cat config.yml" "5000"
-
+######BLOCK END
 # services can end up on any IP.  Make sure we get the IP we need for the docker registry
 DOCKER_REGISTRY=$(oc get --template="{{ .spec.clusterIP }}:{{ (index .spec.ports 0).port }}" service docker-registry)
 
