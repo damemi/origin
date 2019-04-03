@@ -723,13 +723,32 @@ func (o *GetOptions) watch(f cmdutil.Factory, cmd *cobra.Command, args []string)
 
 			// printing always takes the internal version, but the watch event uses externals
 			// TODO fix printing to use server-side or be version agnostic
-			objToPrint := e.Object
-			if o.IsHumanReadablePrinter {
-				internalGV := mapping.GroupVersionKind.GroupKind().WithVersion(runtime.APIVersionInternal).GroupVersion()
-				objToPrint = attemptToConvertToInternal(e.Object, legacyscheme.Scheme, internalGV)
+			//objToPrint := e.Object
+			var objsToPrint []runtime.Object
+			if isList {
+				objsToPrint, _ = meta.ExtractList(e.Object)
+			} else {
+				objsToPrint = append(objsToPrint, e.Object)
 			}
-			if err := printer.PrintObj(objToPrint, o.Out); err != nil {
-				return false, err
+			for ix := range objsToPrint {
+				table, err := o.decodeIntoTable(objsToPrint[ix])
+				if err == nil {
+					objsToPrint[ix] = table
+				} else {
+					// if we are unable to decode server response into a v1beta1.Table,
+					// fallback to client-side printing with whatever info the server returned.
+					klog.V(2).Infof("Unable to decode server response into a Table. Falling back to hardcoded types: %v", err)
+				}
+			}
+
+			for _, objToPrint := range objsToPrint {
+				if o.IsHumanReadablePrinter {
+					internalGV := mapping.GroupVersionKind.GroupKind().WithVersion(runtime.APIVersionInternal).GroupVersion()
+					objToPrint = attemptToConvertToInternal(e.Object, legacyscheme.Scheme, internalGV)
+				}
+				if err := printer.PrintObj(objToPrint, o.Out); err != nil {
+					return false, err
+				}
 			}
 			return false, nil
 		})
