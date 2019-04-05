@@ -70,6 +70,11 @@ func createHandler(r rest.NamedCreater, scope RequestScope, admit admission.Inte
 
 		ctx := req.Context()
 		ctx = request.WithNamespace(ctx, namespace)
+		outputMediaType, _, err := negotiation.NegotiateOutputMediaType(req, scope.Serializer, &scope)
+		if err != nil {
+			scope.err(err, w, req)
+			return
+		}
 
 		gv := scope.Kind.GroupVersion()
 		s, err := negotiation.NegotiateInputSerializer(req, false, scope.Serializer)
@@ -168,7 +173,7 @@ func createHandler(r rest.NamedCreater, scope RequestScope, admit admission.Inte
 		}
 
 		scope.Trace = trace
-		transformResponseObject(ctx, scope, req, w, code, result)
+		transformResponseObject(ctx, scope, req, w, code, outputMediaType, result)
 	}
 }
 

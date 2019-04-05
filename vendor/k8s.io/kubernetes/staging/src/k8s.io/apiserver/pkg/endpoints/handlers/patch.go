@@ -92,6 +92,11 @@ func PatchResource(r rest.Patcher, scope RequestScope, admit admission.Interface
 
 		ctx := req.Context()
 		ctx = request.WithNamespace(ctx, namespace)
+		outputMediaType, _, err := negotiation.NegotiateOutputMediaType(req, scope.Serializer, &scope)
+		if err != nil {
+			scope.err(err, w, req)
+			return
+		}
 
 		patchJS, err := limitedReadBody(req, scope.MaxRequestBodyBytes)
 		if err != nil {
@@ -207,7 +212,7 @@ func PatchResource(r rest.Patcher, scope RequestScope, admit admission.Interface
 		trace.Step("Self-link added")
 
 		scope.Trace = trace
-		transformResponseObject(ctx, scope, req, w, http.StatusOK, result)
+		transformResponseObject(ctx, scope, req, w, http.StatusOK, outputMediaType, result)
 	}
 }
 

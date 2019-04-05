@@ -63,6 +63,11 @@ func UpdateResource(r rest.Updater, scope RequestScope, admit admission.Interfac
 		}
 		ctx := req.Context()
 		ctx = request.WithNamespace(ctx, namespace)
+		outputMediaType, _, err := negotiation.NegotiateOutputMediaType(req, scope.Serializer, &scope)
+		if err != nil {
+			scope.err(err, w, req)
+			return
+		}
 
 		body, err := limitedReadBody(req, scope.MaxRequestBodyBytes)
 		if err != nil {
@@ -191,7 +196,7 @@ func UpdateResource(r rest.Updater, scope RequestScope, admit admission.Interfac
 		}
 
 		scope.Trace = trace
-		transformResponseObject(ctx, scope, req, w, status, result)
+		transformResponseObject(ctx, scope, req, w, status, outputMediaType, result)
 	}
 }
 

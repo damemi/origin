@@ -33,6 +33,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/fields"
 	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apiserver/pkg/endpoints/handlers/negotiation"
 	"k8s.io/apiserver/pkg/endpoints/metrics"
 	"k8s.io/apiserver/pkg/endpoints/request"
 	"k8s.io/apiserver/pkg/registry/rest"
@@ -57,6 +58,11 @@ func getResourceHandler(scope RequestScope, getter getterFunc) http.HandlerFunc 
 		}
 		ctx := req.Context()
 		ctx = request.WithNamespace(ctx, namespace)
+		outputMediaType, _, err := negotiation.NegotiateOutputMediaType(req, scope.Serializer, &scope)
+		if err != nil {
+			scope.err(err, w, req)
+			return
+		}
 
 		result, err := getter(ctx, name, req, trace)
 		if err != nil {
@@ -75,7 +81,7 @@ func getResourceHandler(scope RequestScope, getter getterFunc) http.HandlerFunc 
 
 		trace.Step("About to write a response")
 		scope.Trace = trace
-		transformResponseObject(ctx, scope, req, w, http.StatusOK, result)
+		transformResponseObject(ctx, scope, req, w, http.StatusOK, outputMediaType, result)
 		trace.Step("Transformed response object")
 	}
 }
@@ -186,6 +192,11 @@ func ListResource(r rest.Lister, rw rest.Watcher, scope RequestScope, forceWatch
 
 		ctx := req.Context()
 		ctx = request.WithNamespace(ctx, namespace)
+		outputMediaType, _, err := negotiation.NegotiateOutputMediaType(req, scope.Serializer, &scope)
+		if err != nil {
+			scope.err(err, w, req)
+			return
+		}
 
 		opts := metainternalversion.ListOptions{}
 		if err := metainternalversion.ParameterCodec.DecodeParameters(req.URL.Query(), scope.MetaGroupVersion, &opts); err != nil {
@@ -253,7 +264,7 @@ func ListResource(r rest.Lister, rw rest.Watcher, scope RequestScope, forceWatch
 			}
 			requestInfo, _ := request.RequestInfoFrom(ctx)
 			metrics.RecordLongRunning(req, requestInfo, func() {
-				serveWatch(watcher, scope, req, w, timeout)
+				serveWatch(watcher, scope, outputMediaType, req, w, timeout)
 			})
 			return
 		}
@@ -282,7 +293,7 @@ func ListResource(r rest.Lister, rw rest.Watcher, scope RequestScope, forceWatch
 		}
 
 		scope.Trace = trace
-		transformResponseObject(ctx, scope, req, w, http.StatusOK, result)
+		transformResponseObject(ctx, scope, req, w, http.StatusOK, outputMediaType, result)
 		trace.Step(fmt.Sprintf("Writing http response done (%d items)", numberOfItems))
 	}
 }
