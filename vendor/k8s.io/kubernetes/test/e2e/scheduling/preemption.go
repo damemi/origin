@@ -156,12 +156,15 @@ var _ = SIGDescribe("SchedulerPreemption [Serial]", func() {
 		for _, pod := range pods {
 			framework.ExpectNoError(e2epod.WaitForPodRunningInNamespace(cs, pod))
 		}
+		var preemptNode string
 		if lowerPriorityPodExists {
 			// We want this pod to be preempted
 			podRes = pods[0].Spec.Containers[0].Resources.Requests
+			preemptNode = pods[0].Spec.NodeName
 		} else {
 			// All the pods are medium priority pods, so it doesn't matter which one gets preempted.
 			podRes = pods[1].Spec.Containers[0].Resources.Requests
+			preemptNode = pods[1].Spec.NodeName
 		}
 
 		ginkgo.By("Run a high priority pod that has same requirements as that of lower priority pod")
@@ -172,6 +175,7 @@ var _ = SIGDescribe("SchedulerPreemption [Serial]", func() {
 			Resources: &v1.ResourceRequirements{
 				Requests: podRes,
 			},
+			NodeName: preemptNode,
 		})
 		podPreempted := false
 		if lowerPriorityPodExists {
