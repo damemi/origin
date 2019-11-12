@@ -141,7 +141,7 @@ var _ = SIGDescribe("SchedulerPreemption [Serial]", func() {
 				},
 				NodeName: node.Name,
 			}))
-			framework.Logf("Created pod: %v", currentPod)
+			framework.Logf("Created pod: %v with resources %+v", currentPod, podRes)
 		}
 		if len(pods) < 2 {
 			framework.Skipf("We need atleast two pods to be created but" +
@@ -169,6 +169,7 @@ var _ = SIGDescribe("SchedulerPreemption [Serial]", func() {
 
 		ginkgo.By("Run a high priority pod that has same requirements as that of lower priority pod")
 		// Create a high priority pod and make sure it is scheduled.
+		framework.Logf("Created preemptor pod with resources %+v", podRes)
 		runPausePod(f, pausePodConfig{
 			Name:              "preemptor-pod",
 			PriorityClassName: highPriorityClassName,
