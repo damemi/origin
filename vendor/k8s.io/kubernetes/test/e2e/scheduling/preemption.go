@@ -110,12 +110,12 @@ var _ = SIGDescribe("SchedulerPreemption [Serial]", func() {
 		for i, node := range nodeList.Items {
 			currentCpuUsage, currentMemUsage := getCurrentPodUsageOnTheNode(node.Name, allPods.Items, podRequestedResource)
 			framework.Logf("Current cpu and memory usage %v, %v", currentCpuUsage, currentMemUsage)
-			cpuAllocatable, found := node.Status.Allocatable["cpu"]
+			cpuAllocatable, found := node.Status.Capacity["cpu"]
 			framework.ExpectEqual(found, true)
 			milliCPU := cpuAllocatable.MilliValue()
 			// Just to be tolerant use 0.6 of resources available on the node
 			milliCPU = int64(float64(milliCPU-currentCpuUsage) * float64(0.6))
-			memAllocatable, found := node.Status.Allocatable["memory"]
+			memAllocatable, found := node.Status.Capacity["memory"]
 			framework.ExpectEqual(found, true)
 			memory := memAllocatable.Value()
 			// Just to be tolerant use 0.6 of resources available on the node
