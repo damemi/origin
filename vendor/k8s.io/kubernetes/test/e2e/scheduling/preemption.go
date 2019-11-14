@@ -110,16 +110,16 @@ var _ = SIGDescribe("SchedulerPreemption [Serial]", func() {
 		for i, node := range nodeList.Items {
 			currentCpuUsage, currentMemUsage := getCurrentPodUsageOnTheNode(node.Name, allPods.Items, podRequestedResource)
 			framework.Logf("Current cpu and memory usage %v, %v, capacity: %+v, allocatable: %+v", currentCpuUsage, currentMemUsage, node.Status.Capacity, node.Status.Allocatable)
-			cpuAllocatable, found := node.Status.Capacity["cpu"]
+			cpuAllocatable, found := node.Status.Allocatable["cpu"]
 			framework.ExpectEqual(found, true)
-			milliCPU := cpuAllocatable.MilliValue()
+			milliCPU := cpuAllocatable.MilliValue() * 40 / 100
 			// Just to be tolerant use 0.6 of resources available on the node
-			milliCPU = int64(float64(milliCPU-currentCpuUsage) * float64(0.6))
-			memAllocatable, found := node.Status.Capacity["memory"]
+			//milliCPU = int64(float64(milliCPU-currentCpuUsage) * float64(0.6))
+			memAllocatable, found := node.Status.Allocatable["memory"]
 			framework.ExpectEqual(found, true)
-			memory := memAllocatable.Value()
+			memory := memAllocatable.Value() * 60 / 100
 			// Just to be tolerant use 0.6 of resources available on the node
-			memory = int64(float64(memory-currentMemUsage) * float64(0.6))
+			//memory = int64(float64(memory-currentMemUsage) * float64(0.6))
 			podRes = v1.ResourceList{}
 			// If a node is already heavily utilized let not's create a pod there.
 			if milliCPU <= 0 {
@@ -127,6 +127,7 @@ var _ = SIGDescribe("SchedulerPreemption [Serial]", func() {
 				continue
 			}
 			podRes[v1.ResourceCPU] = *resource.NewMilliQuantity(int64(milliCPU), resource.DecimalSI)
+			podRes[v1.ResourceMemory] = *resource.NewQuantity(int64(memory), resource.BinarySI)
 			// make the first pod low priority and the rest medium priority.
 			priorityName := mediumPriorityClassName
 			if i == 0 {
