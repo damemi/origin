@@ -133,6 +133,7 @@ func NewRequest(client HTTPClient, verb string, baseURL *url.URL, versionedAPIPa
 		throttle:    throttle,
 		timeout:     timeout,
 	}
+	fmt.Printf("Request2: %+v\n\n", r)
 	switch {
 	case len(content.AcceptContentTypes) > 0:
 		r.SetHeader("Accept", content.AcceptContentTypes)
@@ -325,6 +326,7 @@ func (r *Request) SpecificallyVersionedParams(obj runtime.Object, codec runtime.
 		return r
 	}
 	params, err := codec.EncodeParameters(obj, version)
+	fmt.Printf("Encodedparams: %+v\n\n", params)
 	if err != nil {
 		r.err = err
 		return r
@@ -335,6 +337,7 @@ func (r *Request) SpecificallyVersionedParams(obj runtime.Object, codec runtime.
 		}
 		r.params[k] = append(r.params[k], v...)
 	}
+	fmt.Printf("Params: %+v\n\n", r.params)
 	return r
 }
 

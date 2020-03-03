@@ -160,6 +160,7 @@ func Convert(obj interface{}) (url.Values, error) {
 }
 
 func convertStruct(result url.Values, st reflect.Type, sv reflect.Value) {
+	fmt.Printf("Converting struct: %+v %+v %+v\n\n\n", result, st, sv)
 	for i := 0; i < st.NumField(); i++ {
 		field := sv.Field(i)
 		tag, omitempty := jsonTag(st.Field(i))
@@ -188,6 +189,7 @@ func convertStruct(result url.Values, st reflect.Type, sv reflect.Value) {
 				addListOfParams(result, tag, omitempty, field)
 			}
 		case isStructKind(kind) && !(zeroValue(field) && omitempty):
+			fmt.Printf("Converting struct field %+v\n\n", field)
 			if marshalValue, ok := customMarshalValue(field); ok {
 				addParam(result, tag, omitempty, marshalValue)
 			} else {

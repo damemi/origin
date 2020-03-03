@@ -31,7 +31,7 @@ import (
 	"github.com/fsnotify/fsnotify"
 	"github.com/golang/glog"
 
-	"k8s.io/api/core/v1"
+	v1 "k8s.io/api/core/v1"
 	internalapi "k8s.io/kubernetes/pkg/kubelet/apis/cri"
 	runtimeapi "k8s.io/kubernetes/pkg/kubelet/apis/cri/runtime/v1alpha2"
 	"k8s.io/kubernetes/pkg/util/tail"
@@ -107,6 +107,7 @@ func NewLogOptions(apiOpts *v1.PodLogOptions, now time.Time) *LogOptions {
 		opts.since = now.Add(-time.Duration(*apiOpts.SinceSeconds) * time.Second)
 	}
 	if apiOpts.SinceTime != nil && apiOpts.SinceTime.After(opts.since) {
+		fmt.Printf("With the time here\n\n")
 		opts.since = apiOpts.SinceTime.Time
 	}
 	return opts
@@ -224,6 +225,7 @@ func newLogWriter(stdout io.Writer, stderr io.Writer, opts *LogOptions) *logWrit
 
 // writeLogs writes logs into stdout, stderr.
 func (w *logWriter) write(msg *logMessage) error {
+	fmt.Printf("Log message: %+v\n\n\n", msg)
 	if msg.timestamp.Before(w.opts.since) {
 		// Skip the line because it's older than since
 		return nil

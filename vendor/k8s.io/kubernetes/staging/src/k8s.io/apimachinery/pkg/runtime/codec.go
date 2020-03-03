@@ -193,6 +193,7 @@ func (c *parameterCodec) DecodeParameters(parameters url.Values, from schema.Gro
 // EncodeParameters converts the provided object into the to version, then converts that object to url.Values.
 // Returns an error if conversion is not possible.
 func (c *parameterCodec) EncodeParameters(obj Object, to schema.GroupVersion) (url.Values, error) {
+	fmt.Printf("Encoding paramteres\n")
 	gvks, _, err := c.typer.ObjectKinds(obj)
 	if err != nil {
 		return nil, err
@@ -205,6 +206,7 @@ func (c *parameterCodec) EncodeParameters(obj Object, to schema.GroupVersion) (u
 		}
 		obj = out
 	}
+	fmt.Printf("Afterencoding: %+v\n\n", obj)
 	return queryparams.Convert(obj)
 }
 

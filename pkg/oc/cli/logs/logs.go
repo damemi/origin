@@ -133,6 +133,7 @@ func (o *LogsOptions) Complete(f kcmdutil.Factory, cmd *cobra.Command, args []st
 	o.KubeLogOptions.Previous = kcmdutil.GetFlagBool(cmd, "previous")
 	o.KubeLogOptions.Timestamps = kcmdutil.GetFlagBool(cmd, "timestamps")
 	o.KubeLogOptions.SinceTime = kcmdutil.GetFlagString(cmd, "since-time")
+	fmt.Printf("Sincetime: %+v\n\n", o.KubeLogOptions.SinceTime)
 	o.KubeLogOptions.LimitBytes = kcmdutil.GetFlagInt64(cmd, "limit-bytes")
 	o.KubeLogOptions.Tail = kcmdutil.GetFlagInt64(cmd, "tail")
 	o.KubeLogOptions.SinceSeconds = kcmdutil.GetFlagDuration(cmd, "since")
@@ -256,6 +257,7 @@ func (o *LogsOptions) runLogPipeline() error {
 	}
 	isPipeline, bc, isBC, build, isBld := isPipelineBuild(o.KubeLogOptions.Object)
 	if !isPipeline {
+		fmt.Printf("Not pipeline")
 		return o.KubeLogOptions.RunLogs()
 	}
 

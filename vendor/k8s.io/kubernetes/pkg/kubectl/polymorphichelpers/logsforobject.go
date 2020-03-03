@@ -23,8 +23,8 @@ import (
 	"sort"
 	"time"
 
-	"k8s.io/api/core/v1"
 	corev1 "k8s.io/api/core/v1"
+	v1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	corev1client "k8s.io/client-go/kubernetes/typed/core/v1"
 	"k8s.io/client-go/rest"
@@ -49,6 +49,7 @@ func logsForObject(restClientGetter genericclioptions.RESTClientGetter, object, 
 // TODO: remove internal clientset once all callers use external versions
 // this is split for easy test-ability
 func logsForObjectWithClient(clientset corev1client.CoreV1Interface, object, options runtime.Object, timeout time.Duration, allContainers bool) ([]*rest.Request, error) {
+	fmt.Printf("logs for objectwithclient")
 	opts, ok := options.(*corev1.PodLogOptions)
 	if !ok {
 		return nil, errors.New("provided options object is not a PodLogOptions")
@@ -108,6 +109,7 @@ func logsForObjectWithClient(clientset corev1client.CoreV1Interface, object, opt
 	case *corev1.Pod:
 		// if allContainers is true, then we're going to locate all containers and then iterate through them. At that point, "allContainers" is false
 		if !allContainers {
+			fmt.Printf("\n\nnotallcontainers\n\n")
 			return []*rest.Request{clientset.Pods(t.Namespace).GetLogs(t.Name, opts)}, nil
 		}
 

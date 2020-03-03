@@ -117,11 +117,11 @@ func NewCmdLogs(f cmdutil.Factory, streams genericclioptions.IOStreams) *cobra.C
 	o := NewLogsOptions(streams, false)
 
 	cmd := &cobra.Command{
-		Use: "logs [-f] [-p] (POD | TYPE/NAME) [-c CONTAINER]",
+		Use:                   "logs [-f] [-p] (POD | TYPE/NAME) [-c CONTAINER]",
 		DisableFlagsInUseLine: true,
-		Short:   i18n.T("Print the logs for a container in a pod"),
-		Long:    "Print the logs for a container in a pod or specified resource. If the pod has only one container, the container name is optional.",
-		Example: logsExample,
+		Short:                 i18n.T("Print the logs for a container in a pod"),
+		Long:                  "Print the logs for a container in a pod or specified resource. If the pod has only one container, the container name is optional.",
+		Example:               logsExample,
 		PreRun: func(cmd *cobra.Command, args []string) {
 			if len(os.Args) > 1 && os.Args[1] == "log" {
 				printDeprecationWarning(o.ErrOut, "logs", "log")
@@ -159,12 +159,14 @@ func (o *LogsOptions) ToLogOptions() (*corev1.PodLogOptions, error) {
 	}
 
 	if len(o.SinceTime) > 0 {
+		fmt.Printf("SINCE TIME %+v\n\n\n", o.SinceTime)
 		t, err := util.ParseRFC3339(o.SinceTime, metav1.Now)
 		if err != nil {
 			return nil, err
 		}
 
 		logOptions.SinceTime = &t
+		fmt.Printf("Parsed time: %+v\n\n", t.String())
 	}
 
 	if o.LimitBytes != 0 {
@@ -290,6 +292,7 @@ func (o LogsOptions) Validate() error {
 // RunLogs retrieves a pod log
 func (o LogsOptions) RunLogs() error {
 	requests, err := o.LogsForObject(o.RESTClientGetter, o.Object, o.Options, o.GetPodTimeout, o.AllContainers)
+	fmt.Printf("Requests: %+v\n\n", requests)
 	if err != nil {
 		return err
 	}
