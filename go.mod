@@ -10,7 +10,7 @@ require (
 	github.com/boltdb/bolt v1.3.1 // indirect
 	github.com/davecgh/go-spew v1.1.1
 	github.com/docker/distribution v2.7.1+incompatible
-	github.com/fsouza/go-dockerclient v0.0.0-20171004212419-da3951ba2e9e
+	github.com/fsouza/go-dockerclient v1.6.6-0.20200611205848-6aaf6c2d625c
 	github.com/ghodss/yaml v1.0.0
 	github.com/go-bindata/go-bindata v3.1.2+incompatible
 	github.com/go-ozzo/ozzo-validation v3.5.0+incompatible // indirect
@@ -33,11 +33,11 @@ require (
 	github.com/onsi/ginkgo v4.7.0-origin.0+incompatible
 	github.com/onsi/gomega v1.7.0
 	github.com/opencontainers/go-digest v1.0.0
-	github.com/openshift/api v0.0.0-20210208192252-670ac3fc997c
+	github.com/openshift/api v0.0.0-20210225162315-bae60f47eed7
 	github.com/openshift/apiserver-library-go v0.0.0-20210216185127-6e5216cd541f
-	github.com/openshift/build-machinery-go v0.0.0-20200917070002-f171684f77ab
-	github.com/openshift/client-go v0.0.0-20201214125552-e615e336eb49
-	github.com/openshift/library-go v0.0.0-20201214135256-d265f469e75b
+	github.com/openshift/build-machinery-go v0.0.0-20210209125900-0da259a2c359
+	github.com/openshift/client-go v0.0.0-20210112165513-ebc401615f47
+	github.com/openshift/library-go v0.0.0-20210301154249-aa29957b8a9c
 	github.com/pborman/uuid v1.2.0
 	github.com/pquerna/cachecontrol v0.0.0-20201205024021-ac21108117ac // indirect
 	github.com/prometheus/client_golang v1.7.1
@@ -54,7 +54,7 @@ require (
 	golang.org/x/net v0.0.0-20201110031124-69a78807bb2b
 	golang.org/x/oauth2 v0.0.0-20200107190931-bf48bf16ab8d
 	golang.org/x/sys v0.0.0-20210124154548-22da62e12c0c // indirect
-	google.golang.org/grpc v1.27.1
+	google.golang.org/grpc v1.29.1
 	gopkg.in/ldap.v2 v2.5.1
 	gopkg.in/src-d/go-git.v4 v4.13.1
 	gopkg.in/yaml.v2 v2.3.0
@@ -77,9 +77,9 @@ require (
 
 replace (
 	github.com/onsi/ginkgo => github.com/openshift/onsi-ginkgo v4.7.0-origin.0+incompatible
-	github.com/openshift/apiserver-library-go => github.com/openshift/apiserver-library-go v0.0.0-20201214145556-6f1013f42f98
-	github.com/openshift/client-go => github.com/openshift/client-go v0.0.0-20201214125552-e615e336eb49
-	github.com/openshift/library-go => github.com/openshift/library-go v0.0.0-20201214135256-d265f469e75b
+	github.com/openshift/apiserver-library-go => github.com/openshift/apiserver-library-go v0.0.0-20210216185127-6e5216cd541f
+	github.com/openshift/client-go => github.com/openshift/client-go v0.0.0-20210112165513-ebc401615f47
+	github.com/openshift/library-go => github.com/openshift/library-go v0.0.0-20210301154249-aa29957b8a9c
 	k8s.io/api => github.com/openshift/kubernetes/staging/src/k8s.io/api v0.0.0-20210302101716-2ce2be0b63d1
 	k8s.io/apiextensions-apiserver => github.com/openshift/kubernetes/staging/src/k8s.io/apiextensions-apiserver v0.0.0-20210302101716-2ce2be0b63d1
 	k8s.io/apimachinery => github.com/openshift/kubernetes/staging/src/k8s.io/apimachinery v0.0.0-20210302101716-2ce2be0b63d1
