@@ -35,7 +35,7 @@ require (
 	github.com/opencontainers/go-digest v1.0.0
 	github.com/openshift/api v0.0.0-20210225162315-bae60f47eed7
 	github.com/openshift/apiserver-library-go v0.0.0-20210216185127-6e5216cd541f
-	github.com/openshift/build-machinery-go v0.0.0-20210209125900-0da259a2c359
+	github.com/openshift/build-machinery-go v0.0.0-20200917070002-f171684f77ab
 	github.com/openshift/client-go v0.0.0-20210112165513-ebc401615f47
 	github.com/openshift/library-go v0.0.0-20210301154249-aa29957b8a9c
 	github.com/pborman/uuid v1.2.0
