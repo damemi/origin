@@ -50,23 +50,22 @@ require (
 	github.com/stretchr/testify v1.6.1
 	github.com/xeipuuv/gojsonschema v1.2.0 // indirect
 	go.etcd.io/etcd v0.5.0-alpha.5.0.20200910180754-dd1b699fc489
-	golang.org/x/crypto v0.0.0-20201002170205-7f63de1d35b0
-	golang.org/x/net v0.0.0-20201110031124-69a78807bb2b
+	golang.org/x/crypto v0.0.0-20210220033148-5ea612d1eb83
+	golang.org/x/net v0.0.0-20210224082022-3d97a244fca7
 	golang.org/x/oauth2 v0.0.0-20200107190931-bf48bf16ab8d
-	golang.org/x/sys v0.0.0-20210124154548-22da62e12c0c // indirect
 	google.golang.org/grpc v1.29.1
 	gopkg.in/ldap.v2 v2.5.1
 	gopkg.in/src-d/go-git.v4 v4.13.1
 	gopkg.in/yaml.v2 v2.3.0
-	k8s.io/api v0.20.0
-	k8s.io/apiextensions-apiserver v0.20.0
-	k8s.io/apimachinery v0.20.0
-	k8s.io/apiserver v0.20.0
+	k8s.io/api v0.21.0-beta.1
+	k8s.io/apiextensions-apiserver v0.21.0-beta.1
+	k8s.io/apimachinery v0.21.0-beta.1
+	k8s.io/apiserver v0.21.0-beta.1
 	k8s.io/cli-runtime v0.20.0
-	k8s.io/client-go v0.20.0
-	k8s.io/component-base v0.20.0
+	k8s.io/client-go v0.21.0-beta.1
+	k8s.io/component-base v0.21.0-beta.1
 	k8s.io/component-helpers v0.0.0
-	k8s.io/klog/v2 v2.4.0
+	k8s.io/klog/v2 v2.5.0
 	k8s.io/kube-openapi v0.0.0-20201113171705-d219536bb9fd
 	k8s.io/kubectl v0.20.0
 	k8s.io/kubelet v0.20.0
@@ -79,7 +78,8 @@ replace (
 	github.com/onsi/ginkgo => github.com/openshift/onsi-ginkgo v4.7.0-origin.0+incompatible
 	github.com/openshift/apiserver-library-go => github.com/openshift/apiserver-library-go v0.0.0-20210216185127-6e5216cd541f
 	github.com/openshift/client-go => github.com/openshift/client-go v0.0.0-20210112165513-ebc401615f47
-	github.com/openshift/library-go => github.com/openshift/library-go v0.0.0-20210301154249-aa29957b8a9c
+	//github.com/openshift/library-go => github.com/openshift/library-go v0.0.0-20210301154249-aa29957b8a9c
+	github.com/openshift/library-go => github.com/damemi/library-go v0.0.0-20210309165920-730cb04845ec
 	k8s.io/api => github.com/openshift/kubernetes/staging/src/k8s.io/api v0.0.0-20210308201120-3e36a97ec7b4
 	k8s.io/apiextensions-apiserver => github.com/openshift/kubernetes/staging/src/k8s.io/apiextensions-apiserver v0.0.0-20210308201120-3e36a97ec7b4
 	k8s.io/apimachinery => github.com/openshift/kubernetes/staging/src/k8s.io/apimachinery v0.0.0-20210308201120-3e36a97ec7b4
