@@ -246,6 +246,7 @@ github.com/docker/go-connections/tlsconfig
 # github.com/docker/go-units v0.4.0
 github.com/docker/go-units
 # github.com/docker/libtrust v0.0.0-20160708172513-aabc10ec26b7
+## explicit
 github.com/docker/libtrust
 # github.com/docker/spdystream v0.0.0-20160310174837-449fdfce4d96
 github.com/docker/spdystream
@@ -786,7 +787,7 @@ github.com/openshift/client-go/user/informers/externalversions/internalinterface
 github.com/openshift/client-go/user/informers/externalversions/user
 github.com/openshift/client-go/user/informers/externalversions/user/v1
 github.com/openshift/client-go/user/listers/user/v1
-# github.com/openshift/library-go v0.0.0-20210223155927-2d5e9a25578e => github.com/openshift/library-go v0.0.0-20210308092253-c624381e7390
+# github.com/openshift/library-go v0.0.0-20210223155927-2d5e9a25578e => github.com/damemi/library-go v0.0.0-20210309184644-f7b969dfaf1e
 ## explicit
 github.com/openshift/library-go/pkg/apiserver/admission/admissionrestconfig
 github.com/openshift/library-go/pkg/apiserver/admission/admissiontimeout
@@ -1296,6 +1297,7 @@ google.golang.org/protobuf/types/known/timestamppb
 google.golang.org/protobuf/types/known/wrapperspb
 google.golang.org/protobuf/types/pluginpb
 # gopkg.in/asn1-ber.v1 v1.0.0-20181015200546-f715ec2f112d
+## explicit
 gopkg.in/asn1-ber.v1
 # gopkg.in/fsnotify.v1 v1.4.7
 gopkg.in/fsnotify.v1
@@ -2925,7 +2927,7 @@ sigs.k8s.io/yaml
 # github.com/onsi/ginkgo => github.com/openshift/onsi-ginkgo v4.7.0-origin.0+incompatible
 # github.com/openshift/apiserver-library-go => github.com/openshift/apiserver-library-go v0.0.0-20201214145556-6f1013f42f98
 # github.com/openshift/client-go => github.com/openshift/client-go v0.0.0-20201214125552-e615e336eb49
-# github.com/openshift/library-go => github.com/openshift/library-go v0.0.0-20210308092253-c624381e7390
+# github.com/openshift/library-go => github.com/damemi/library-go v0.0.0-20210309184644-f7b969dfaf1e
 # k8s.io/api => github.com/openshift/kubernetes/staging/src/k8s.io/api v0.0.0-20210308201120-3e36a97ec7b4
 # k8s.io/apiextensions-apiserver => github.com/openshift/kubernetes/staging/src/k8s.io/apiextensions-apiserver v0.0.0-20210308201120-3e36a97ec7b4
 # k8s.io/apimachinery => github.com/openshift/kubernetes/staging/src/k8s.io/apimachinery v0.0.0-20210308201120-3e36a97ec7b4
